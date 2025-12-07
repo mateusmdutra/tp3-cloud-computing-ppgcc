@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: tp3-redis-runtime
-        image: quay.io/mmdutra14/mateusdutra-tp3-runtime:0.1
+        image: quay.io/mmdutra14/mateusdutra-tp3-runtime:0.2
         imagePullPolicy: Always
         resources:
           requests:
@@ -72,7 +72,7 @@ spec:
     spec:
       containers:
         - name: dashboard
-          image: quay.io/mmdutra14/mateusdutra-tp3-dashboard:0.1
+          image: quay.io/mmdutra14/mateusdutra-tp3-dashboard:0.2
           ports:
             - containerPort: 8501
           env:
