@@ -12,7 +12,7 @@ import plotly.express as px
 
 REDIS_HOST = os.getenv("REDIS_HOST", "192.168.121.189")
 REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
-REDIS_KEY  = os.getenv("REDIS_OUTPUT_KEY", "luizcouto-proj3-output")
+REDIS_KEY  = os.getenv("REDIS_OUTPUT_KEY", "redis-gabriel-mateus")
 UPDATE_INTERVAL = 3  # segundos
 MAX_RECORDS = 100
 
