@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: proj3-dashboard-service
+  name: tp3-dashboard-service
 spec:
   type: NodePort
   selector:
-    app: proj3-dashboard-streamlit
+    app: tp3-dashboard-service
   ports:
     - port: 80
       targetPort: 8501

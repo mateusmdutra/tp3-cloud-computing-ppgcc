@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis-runtime
+  name: tp3-redis-runtime
   labels:
-    app: redis-runtime
+    app: tp3-redis-runtime
   annotations:
     argocd.argoproj.io/sync-options: Force=true,Replace=true
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis-runtime
+      app: tp3-redis-runtime
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -19,10 +19,10 @@ spec:
   template:
     metadata:
       labels:
-        app: redis-runtime
+        app: tp3-redis-runtime
     spec:
       containers:
-      - name: redis-runtime
+      - name: tp3-redis-runtime
         image: mmdutra14/mateusdutra-tp3-serverless:latest
         imagePullPolicy: Always
         resources:
@@ -54,3 +54,31 @@ spec:
       - name: pyfile
         configMap:
           name: pyfile
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tp3-dashboard-streamlit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tp3-dashboard-streamlit
+  template:
+    metadata:
+      labels:
+        app: tp3-dashboard-streamlit
+    spec:
+      containers:
+        - name: dashboard
+          image: mmdutra14/mateusdutra-tp3-dashboard:latest
+          ports:
+            - containerPort: 8501
+          env:
+            - name: REDIS_HOST
+              value: "192.168.121.189"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_OUTPUT_KEY
+              value: "luizcouto-proj3-output"
