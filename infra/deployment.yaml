@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-runtime
+  labels:
+    app: redis-runtime
+  annotations:
+    argocd.argoproj.io/sync-options: Force=true,Replace=true
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-runtime
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: redis-runtime
+    spec:
+      containers:
+      - name: redis-runtime
+        image: mmdutra14/mateusdutra-tp3-serverless:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+          - mountPath: pyfile
+            name: pyfile
+        env:
+        - name: REDIS_HOST
+          value: "192.168.121.189"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_INPUT_KEY
+          value: "metrics"
+        - name: REDIS_OUTPUT_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: outputkey
+              key: REDIS_OUTPUT_KEY
+        - name: SLEEP_TIME
+          value: "5"
+      restartPolicy: Always
+      volumes:
+      - name: pyfile
+        configMap:
+          name: pyfile
