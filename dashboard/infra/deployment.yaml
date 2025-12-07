@@ -23,4 +23,4 @@ spec:
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_OUTPUT_KEY
-              value: "luizcouto-proj3-output"
+              value: "redis-gabriel-mateus"
