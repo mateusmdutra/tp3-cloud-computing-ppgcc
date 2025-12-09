@@ -9,4 +9,4 @@ spec:
   ports:
     - port: 80
       targetPort: 8501
-      nodePort: 5231
+      nodePort: 30000
