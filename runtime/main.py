@@ -63,7 +63,6 @@ class RedisHandler:
         client = redis.Redis(
             host=self.config['redis_host'],
             port=self.config['redis_port'],
-            charset="utf-8",
             decode_responses=True,
             socket_connect_timeout=5,
             socket_timeout=5
