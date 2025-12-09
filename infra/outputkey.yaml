@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  REDIS_OUTPUT_KEY: mateusdutra-proj3-output
+  REDIS_OUTPUT_KEY: mateus-gabriel-proj3-output
 kind: ConfigMap
 metadata:
   creationTimestamp: "2025-12-08T23:23:21Z"

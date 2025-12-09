@@ -37,7 +37,7 @@ spec:
             name: pyfile
         env:
         - name: REDIS_HOST
-          value: "192.168.121.189"
+          value: "192.168.121.48"
         - name: REDIS_PORT
           value: "6379"
         - name: REDIS_INPUT_KEY
@@ -76,9 +76,14 @@ spec:
           ports:
             - containerPort: 8501
           env:
-            - name: REDIS_HOST
-              value: "192.168.121.189"
-            - name: REDIS_PORT
-              value: "6379"
-            - name: REDIS_OUTPUT_KEY
-              value: "luizcouto-proj3-output"
+        - name: REDIS_HOST
+          value: "192.168.121.48"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_INPUT_KEY
+          value: "metrics"
+        - name: REDIS_OUTPUT_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: outputkey
+              key: REDIS_OUTPUT_KEY
