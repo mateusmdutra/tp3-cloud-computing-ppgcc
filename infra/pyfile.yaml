@@ -1,7 +1,9 @@
 apiVersion: v1
 data:
   pyfile: |+
-    def handler(input: dict, context: object) -> dict[str, any]:
+    from typing import Dict, Any
+    
+    def handler(input: Dict[str, Any], context: object) -> Dict[str, Any]:
         env = context.env
         cpu_env = env.setdefault("cpu_utilizations", {})
 
