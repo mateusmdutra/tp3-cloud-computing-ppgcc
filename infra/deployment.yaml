@@ -77,14 +77,14 @@ spec:
           ports:
             - containerPort: 8501
           env:
-        - name: REDIS_HOST
-          value: "192.168.121.171"
-        - name: REDIS_PORT
-          value: "6379"
-        - name: REDIS_INPUT_KEY
-          value: "metrics"
-        - name: REDIS_OUTPUT_KEY
-          valueFrom:
-            configMapKeyRef:
-              name: outputkey
-              key: REDIS_OUTPUT_KEY
+          - name: REDIS_HOST
+            value: "192.168.121.171"
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_INPUT_KEY
+            value: "metrics"
+          - name: REDIS_OUTPUT_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: outputkey
+                key: REDIS_OUTPUT_KEY
