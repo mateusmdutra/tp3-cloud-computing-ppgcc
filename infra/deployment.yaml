@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: tp3-redis-runtime
-        image: quay.io/mmdutra14/mateusdutra-tp3-runtime:0.3
+        image: quay.io/mmdutra14/mateusdutra-tp3-runtime:0.4
         imagePullPolicy: Always
         resources:
           requests:
@@ -33,8 +33,9 @@ spec:
             memory: "512Mi"
             cpu: "500m"
         volumeMounts:
-          - mountPath: pyfile
-            name: pyfile
+        - name: pyfile
+          mountPath: "/app/usermodule.py"
+          subPath: "pyfile"
         env:
         - name: REDIS_HOST
           value: "192.168.121.171"
