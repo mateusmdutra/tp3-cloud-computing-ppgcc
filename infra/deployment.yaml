@@ -82,3 +82,47 @@ spec:
               value: "6379"
             - name: REDIS_OUTPUT_KEY
               value: "luizcouto-proj3-output"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tp3-serverless-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tp3-serverless-redis
+  template:
+    metadata:
+      labels:
+        app: tp3-serverless-redis
+    spec:
+      containers:
+      - name: tp3-serverless-redis
+        image: quay.io/mmdutra14/mateusdutra-tp3-serverless-redis:0.1
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 300Mi
+        volumeMounts:
+        - name: pyfile
+          mountPath: "/opt/usermodule.py"
+          subPath: pyfile
+        env:
+        - name: REDIS_HOST
+          value: "192.168.121.187"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_INPUT_KEY
+          value: "metrics"
+        - name: REDIS_OUTPUT_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: outputkey
+              key: REDIS_OUTPUT_KEY
+      volumes:
+      - name: pyfile
+        configMap:
+          name: pyfile

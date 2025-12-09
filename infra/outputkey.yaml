@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  REDIS_OUTPUT_KEY: mateusdutra-proj3-output
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2025-12-08T23:23:21Z"
+  name: outputkey
+  namespace: mateusdutra
+  resourceVersion: "1812119"
+  uid: af2a4be9-1cba-4a19-9e41-70d70e8e2b22

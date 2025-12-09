@@ -1,0 +1,37 @@
+def handler(input: dict, context: object) -> dict[str, any]:
+    env = context.env
+    cpu_env = env.setdefault("cpu_utilizations", {})
+
+    # --- Network egress ---
+    bytes_sent = input.get("net_io_counters_eth0-bytes_sent", 0)
+    bytes_recv = input.get("net_io_counters_eth0-bytes_recv", 0)
+    total_bytes = bytes_sent + bytes_recv
+    percent_network_egress = (bytes_sent / total_bytes * 100) if total_bytes > 0 else 0
+
+    # --- Memory cached ---
+    cached = input.get("virtual_memory-cached", 0)
+    buffers = input.get("virtual_memory-buffers", 0)
+    total_memory = input.get("virtual_memory-total", 0)
+    percent_memory_cached = ((cached + buffers) / total_memory * 100) if total_memory > 0 else 0
+
+    # --- CPU moving average ---
+    cpu_utilization = {}
+    for key, value in input.items():
+        if key.startswith("cpu_percent-"):
+            cpu_id = key.split("-")[1]
+
+            cpu_env.setdefault(cpu_id, []).append(value)
+
+            # Keep last 60 samples
+            if len(cpu_env[cpu_id]) > 60:
+                cpu_env[cpu_id].pop(0)
+
+            avg_util = sum(cpu_env[cpu_id]) / len(cpu_env[cpu_id])
+            cpu_utilization[f"avg-util-{cpu_id}-60sec"] = avg_util
+
+    # --- Result ---
+    return {
+        "percent-network-egress": percent_network_egress,
+        "percent-memory-cached": percent_memory_cached,
+        **cpu_utilization
+    }
