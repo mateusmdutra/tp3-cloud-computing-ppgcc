@@ -35,7 +35,7 @@ class Context:
         
     def _get_module_mtime(self) -> str:
         try:
-            module_path = Path(f"/app/{os.getenv('ROOT_FUNCTION_MODULE')}.py")
+            module_path = Path(f"/app/function/{os.getenv('ROOT_FUNCTION_MODULE')}.py")
             if module_path.exists():
                 timestamp = module_path.stat().st_mtime
                 return datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
@@ -57,7 +57,7 @@ class RedisHandler:
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.redis_client = self._create_redis_client()
-        self.function = self._import_function(f"/app/{os.getenv('ROOT_FUNCTION_MODULE')}.py")
+        self.function = self._import_function(f"/app/function/{os.getenv('ROOT_FUNCTION_MODULE')}.py")
         self.context = self._create_context()
         
     def _create_redis_client(self) -> redis.Redis:
