@@ -57,7 +57,6 @@ class RedisHandler:
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.redis_client = self._create_redis_client()
-        self.function = self._import_function(f"/app/function/{os.getenv('ROOT_FUNCTION_MODULE')}.py")
         self.context = self._create_context()
         
     def _create_redis_client(self) -> redis.Redis:
@@ -102,7 +101,8 @@ class RedisHandler:
         logger.debug("Output enviado com sucesso")
     
     def _process_message(self, input_data: Dict[str, Any]) -> Optional[Any]:
-        output = self.function.handler(input_data, self.context)
+        handler = self._import_function(f"/app/function/{os.getenv('ROOT_FUNCTION_MODULE')}.py")
+        output = handler(input_data, self.context)
         self.context.set_last_execution()
         return output
     
