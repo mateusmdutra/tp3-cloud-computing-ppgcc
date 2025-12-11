@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: tp3-redis-runtime
-        image: quay.io/mmdutra14/mateusdutra-tp3-runtime:0.8.2
+        image: quay.io/mmdutra14/mateusdutra-tp3-runtime:0.8.3
         imagePullPolicy: Always
         resources:
           requests:
