@@ -35,7 +35,7 @@ class Context:
         
     def _get_module_mtime(self) -> str:
         try:
-            module_path = Path(f"/app/functionzipfile/{os.getenv('ROOT_FUNCTION_MODULE')}.py")
+            module_path = Path(f"/app/{os.getenv('ROOT_FUNCTION_MODULE')}.py")
             if module_path.exists():
                 timestamp = module_path.stat().st_mtime
                 return datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
