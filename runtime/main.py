@@ -6,6 +6,7 @@ import sys
 import time
 from pathlib import Path
 from typing import Any, Dict, Optional
+import importlib.util
 
 import redis
 
@@ -57,7 +58,7 @@ class RedisHandler:
         self.config = config
         self.redis_client = self._create_redis_client()
         self.context = self._create_context()
-        self.user_module = self._import_user_module()
+        self.function = self._import_function(f"/app/serverless_function/{os.getenv('ROOT_FUNCTION_MODULE')}.py")
         
     def _create_redis_client(self) -> redis.Redis:
         client = redis.Redis(
@@ -80,16 +81,11 @@ class RedisHandler:
             output_key=self.config['redis_output_key']
         )
     
-    def _import_user_module(self):
-        try:
-            import usermodule
-            if not hasattr(usermodule, 'handler'):
-                raise ConfigurationError("usermodule não possui função 'handler'")
-            logger.info("Módulo de usuário carregado com sucesso")
-            return usermodule
-        except ImportError:
-            logger.error("usermodule.py não encontrado")
-            raise ConfigurationError("usermodule.py não encontrado")
+    def _import_function(self, root_function_module):
+        spec = importlib.util.spec_from_file_location("user_module", root_function_module)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return getattr(module, "handler")
     
     def _get_input(self) -> Optional[Dict[str, Any]]:
         raw_input = self.redis_client.get(self.config['redis_input_key'])
@@ -106,7 +102,7 @@ class RedisHandler:
         logger.debug("Output enviado com sucesso")
     
     def _process_message(self, input_data: Dict[str, Any]) -> Optional[Any]:
-        output = self.user_module.handler(input_data, self.context)
+        output = self.function.handler(input_data, self.context)
         self.context.set_last_execution()
         return output
     

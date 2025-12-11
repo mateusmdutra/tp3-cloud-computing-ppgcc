@@ -33,9 +33,9 @@ spec:
             memory: "512Mi"
             cpu: "500m"
         volumeMounts:
-        - name: pyfile
-          mountPath: "/app/usermodule.py"
-          subPath: "pyfile"
+        - name: functionzipfile
+          mountPath: /app/functionzipfile64
+          subPath: functionzipfile64
         env:
         - name: REDIS_HOST
           value: "192.168.121.171"
@@ -50,11 +50,16 @@ spec:
               key: REDIS_OUTPUT_KEY
         - name: SLEEP_TIME
           value: "5"
+        - name: ROOT_FUNCTION_MODULE
+          valueFrom:
+            configMapKeyRef:
+              name: outputkey
+              key: ROOT_FUNCTION_MODULE
       restartPolicy: Always
       volumes:
-      - name: pyfile
+      - name: functionzipfile
         configMap:
-          name: pyfile
+          name: functionzipfile
 
 ---
 apiVersion: apps/v1
